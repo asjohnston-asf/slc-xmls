@@ -8,10 +8,10 @@ Parameters:
     Type: String
     NoEcho: true
 
-  Bucket:
-    Type: String
-
 Resources:
+
+  Bucket:
+    Type: AWS::S3::Bucket
 
   Lambda:
     Type: AWS::Lambda::Function

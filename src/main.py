@@ -6,7 +6,8 @@ from remotezip import RemoteZip
 from aws_requests_auth.aws_auth import AWSRequestsAuth
 
 
-response = requests.get('https://sentinel1.asf.alaska.edu/s3credentials')
+response = requests.get('https://urs.earthdata.nasa.gov/oauth/authorize?client_id=BO_n7nTIlMljdvU6kRRB3g&response_type=code&redirect_uri=https://sentinel1.asf.alaska.edu/login&state=%2Fs3credentials&app_type=401',
+                        auth=(os.environ['USERNAME'], os.environ['PASSWORD']))
 response.raise_for_status()
 credentials = response.json()
 

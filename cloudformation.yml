@@ -29,12 +29,14 @@ Resources:
 
   Queue:
     Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 300
 
   LambdaEventSourceMapping:
     Type: AWS::Lambda::EventSourceMapping
     Properties:
       FunctionName: !Ref Lambda
-      BatchSize: 1000
+      BatchSize: 100
       EventSourceArn: !GetAtt Queue.Arn
       MaximumBatchingWindowInSeconds: 30
 

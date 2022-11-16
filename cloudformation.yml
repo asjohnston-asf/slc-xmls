@@ -20,6 +20,7 @@ Resources:
         Variables:
           USERNAME: !Ref Username
           PASSWORD: !Ref Password
+          BUCKET: !Ref Bucket
       Code: src/
       Handler: main.lambda_handler
       MemorySize: 128

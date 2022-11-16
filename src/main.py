@@ -7,7 +7,6 @@ from aws_requests_auth.aws_auth import AWSRequestsAuth
 
 
 s3 = boto3.client('s3')
-target_bucket = 'asj-dev'
 
 
 def get_auth():
@@ -40,7 +39,7 @@ def process_granules(granules):
                 if filename.endswith('.xml') or filename.endswith('.safe'):
                     print(filename)
                     z.extract(filename)
-                    s3.upload_file(filename, target_bucket, filename)
+                    s3.upload_file(filename, os.environ['BUCKET'], filename)
                     os.remove(filename)
 
 

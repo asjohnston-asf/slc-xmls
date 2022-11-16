@@ -1,0 +1,4 @@
+remotezip
+boto3
+aws-requests-auth
+requests

@@ -3,10 +3,7 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - python=3.110
+  - python=3.10
   - pip
-  - boto3
-  - aws-requests-auth
-  - requests
   - pip:
-      - remotezip
+      - -r requirements.txt

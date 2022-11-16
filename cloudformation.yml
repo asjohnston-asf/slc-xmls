@@ -24,7 +24,7 @@ Resources:
       Handler: main.lambda_handler
       MemorySize: 128
       Role: !GetAtt LambdaRole.Arn
-      Runtime: python3.10
+      Runtime: python3.9
       Timeout: 300
 
   Queue:
@@ -33,7 +33,7 @@ Resources:
   LambdaEventSourceMapping:
     Type: AWS::Lambda::EventSourceMapping
     Properties:
-      FunctionName: !Ref LambdaFunction
+      FunctionName: !Ref Lambda
       BatchSize: 1000
       EventSourceArn: !GetAtt Queue.Arn
       MaximumBatchingWindowInSeconds: 30
@@ -68,3 +68,6 @@ Resources:
                 Action:
                   - s3:PutObject
                 Resource: !Sub "arn:aws:s3:::${Bucket}/*"
+              - Effect: Allow
+                Action: sqs:*
+                Resource: !GetAtt Queue.Arn

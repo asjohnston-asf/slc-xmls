@@ -37,7 +37,6 @@ def process_granules(granules):
             filenames = z.namelist()
             for filename in filenames:
                 if filename.endswith('.xml') or filename.endswith('.safe'):
-                    print(filename)
                     z.extract(filename)
                     s3.upload_file(filename, os.environ['BUCKET'], filename)
                     os.remove(filename)

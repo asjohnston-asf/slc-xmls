@@ -1,0 +1,12 @@
+name: slc-xmls
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.11
+  - pip
+  - boto3
+  - aws-requests-auth
+  - requests
+  - pip:
+      - remotezip

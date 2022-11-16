@@ -22,10 +22,21 @@ Resources:
           PASSWORD: !Ref Password
       Code: src/
       Handler: main.lambda_handler
-      MemorySize: 2000
+      MemorySize: 128
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.10
       Timeout: 300
+
+  Queue:
+    Type: AWS::SQS::Queue
+
+  LambdaEventSourceMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      FunctionName: !Ref LambdaFunction
+      BatchSize: 1000
+      EventSourceArn: !GetAtt Queue.Arn
+      MaximumBatchingWindowInSeconds: 30
 
   LambdaLogGroup:
     Type: AWS::Logs::LogGroup

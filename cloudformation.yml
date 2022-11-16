@@ -1,0 +1,59 @@
+Parameters:
+
+  Username:
+    Type: String
+    NoEcho: true
+
+  Password:
+    Type: String
+    NoEcho: true
+
+  Bucket:
+    Type: String
+
+Resources:
+
+  Lambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Environment:
+        Variables:
+          USERNAME: !Ref Username
+          PASSWORD: !Ref Password
+      Code: src/
+      Handler: main.lambda_handler
+      MemorySize: 2000
+      Role: !GetAtt LambdaRole.Arn
+      Runtime: python3.10
+      Timeout: 300
+
+  LambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${Lambda}"
+      RetentionInDays: 90
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Action: sts:AssumeRole
+          Principal:
+            Service: lambda.amazonaws.com
+          Effect: Allow
+      Policies:
+        - PolicyName: policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*"
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                Resource: !Sub "arn:aws:s3:::${Bucket}/*"

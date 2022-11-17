@@ -1,6 +1,7 @@
 import os
 
 import boto3
+import botocore.exceptions
 import remotezip
 import requests
 from aws_requests_auth.aws_auth import AWSRequestsAuth
@@ -34,14 +35,14 @@ def process_granule(granule, session):
 
     for ii in range(3):
         try:
-            with remotezip.RemoteZip(url, session=session) as z:
-                filenames = z.namelist()
+            with remotezip.RemoteZip(url, session=session) as zip_file:
+                filenames = zip_file.namelist()
                 for filename in filenames:
                     if (filename.endswith('.xml') and '/calibration/' not in filename) or filename.endswith('.safe'):
-                        with z.open(filename) as file_handle:
+                        with zip_file.open(filename) as file_handle:
                             s3.upload_fileobj(file_handle, os.environ['BUCKET'], filename)
             return
-        except remotezip.RemoteIOError:
+        except (remotezip.RemoteIOError, botocore.exceptions.HTTPClientError):
             if ii == 2:
                 raise
 

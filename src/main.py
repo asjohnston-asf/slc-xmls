@@ -38,9 +38,8 @@ def process_granule(granule, session):
                 filenames = z.namelist()
                 for filename in filenames:
                     if (filename.endswith('.xml') and '/calibration/' not in filename) or filename.endswith('.safe'):
-                        z.extract(filename)
-                        s3.upload_file(filename, os.environ['BUCKET'], filename)
-                        os.remove(filename)
+                        with z.open(filename) as file_handle:
+                            s3.upload_fileobj(file_handle, os.environ['BUCKET'], filename)
             return
         except remotezip.RemoteIOError:
             if ii == 2:
@@ -57,5 +56,4 @@ def process_granules(granules):
 
 def lambda_handler(event, context):
     granules = [record['body'] for record in event['Records']]
-    os.chdir('/tmp')
     process_granules(granules)

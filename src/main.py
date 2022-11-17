@@ -1,8 +1,8 @@
 import os
 
 import boto3
+import remotezip
 import requests
-from remotezip import RemoteZip
 from aws_requests_auth.aws_auth import AWSRequestsAuth
 
 
@@ -28,18 +28,29 @@ def get_auth():
     return auth
 
 
+def process_granule(granule, auth):
+    print(granule)
+    url = f'https://s3-us-west-2.amazonaws.com/asf-ngap2w-p-s1-slc-7b420b89/{granule}.zip'
+
+    for ii in range(3):
+        try:
+            with remotezip.RemoteZip(url, auth=auth) as z:
+                filenames = z.namelist()
+                for filename in filenames:
+                    if filename.endswith('.xml') or filename.endswith('.safe'):
+                        z.extract(filename)
+                        s3.upload_file(filename, os.environ['BUCKET'], filename)
+                        os.remove(filename)
+            return
+        except remotezip.RemoteIOError:
+            if ii == 2:
+                raise
+
+
 def process_granules(granules):
     auth = get_auth()
     for granule in granules:
-        print(granule)
-        url = f'https://s3-us-west-2.amazonaws.com/asf-ngap2w-p-s1-slc-7b420b89/{granule}.zip'
-        with RemoteZip(url, auth=auth) as z:
-            filenames = z.namelist()
-            for filename in filenames:
-                if filename.endswith('.xml') or filename.endswith('.safe'):
-                    z.extract(filename)
-                    s3.upload_file(filename, os.environ['BUCKET'], filename)
-                    os.remove(filename)
+        process_granule(granule, auth)
 
 
 def lambda_handler(event, context):

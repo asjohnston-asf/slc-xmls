@@ -8,10 +8,10 @@ Parameters:
     Type: String
     NoEcho: true
 
-Resources:
+  BucketName:
+    Type: String
 
-  Bucket:
-    Type: AWS::S3::Bucket
+Resources:
 
   Lambda:
     Type: AWS::Lambda::Function
@@ -20,7 +20,7 @@ Resources:
         Variables:
           USERNAME: !Ref Username
           PASSWORD: !Ref Password
-          BUCKET: !Ref Bucket
+          BUCKET: !Ref BucketName
       Code: src/
       Handler: main.lambda_handler
       MemorySize: 512
@@ -70,7 +70,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - s3:PutObject
-                Resource: !Sub "arn:aws:s3:::${Bucket}/*"
+                Resource: !Sub "arn:aws:s3:::${BucketName}/*"
               - Effect: Allow
                 Action: sqs:*
                 Resource: !GetAtt Queue.Arn

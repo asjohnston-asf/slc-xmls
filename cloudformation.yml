@@ -23,7 +23,7 @@ Resources:
           BUCKET: !Ref Bucket
       Code: src/
       Handler: main.lambda_handler
-      MemorySize: 1024
+      MemorySize: 512
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.9
       Timeout: 900
@@ -37,7 +37,7 @@ Resources:
     Type: AWS::Lambda::EventSourceMapping
     Properties:
       FunctionName: !Ref Lambda
-      BatchSize: 300
+      BatchSize: 100
       EventSourceArn: !GetAtt Queue.Arn
       MaximumBatchingWindowInSeconds: 5
 

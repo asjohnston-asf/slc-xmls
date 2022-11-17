@@ -7,6 +7,7 @@ from aws_requests_auth.aws_auth import AWSRequestsAuth
 
 
 s3 = boto3.client('s3')
+session = requests.Session()
 
 
 def get_auth():
@@ -34,7 +35,7 @@ def process_granule(granule, auth):
 
     for ii in range(3):
         try:
-            with remotezip.RemoteZip(url, auth=auth) as z:
+            with remotezip.RemoteZip(url, auth=auth, session=session) as z:
                 filenames = z.namelist()
                 for filename in filenames:
                     if filename.endswith('.xml') or filename.endswith('.safe'):

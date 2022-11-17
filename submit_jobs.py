@@ -1,6 +1,9 @@
+import random
+
 import boto3
 
-queue_url = ''
+
+queue_url = 'https://sqs.us-west-2.amazonaws.com/050846374571/asj-slc-dev-Queue-Ubv4l9ANqEPA'
 sqs = boto3.client('sqs')
 
 
@@ -12,6 +15,7 @@ def divide_chunks(l, n):
 with open('slcs.txt') as f:
     granules = [line.strip() for line in f.readlines()]
 
+granules = random.sample(granules, 10)
 n = 0
 for batch in divide_chunks(granules, 10):
     entries = [{'Id': granule, 'MessageBody': granule} for granule in batch]

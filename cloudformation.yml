@@ -23,7 +23,7 @@ Resources:
           BUCKET: !Ref Bucket
       Code: src/
       Handler: main.lambda_handler
-      MemorySize: 3072
+      MemorySize: 128
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.9
       Timeout: 900

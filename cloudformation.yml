@@ -37,7 +37,7 @@ Resources:
     Type: AWS::Lambda::EventSourceMapping
     Properties:
       FunctionName: !Ref Lambda
-      BatchSize: 100
+      BatchSize: 300
       EventSourceArn: !GetAtt Queue.Arn
       MaximumBatchingWindowInSeconds: 5
 

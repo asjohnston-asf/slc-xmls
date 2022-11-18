@@ -38,7 +38,7 @@ def process_granule(granule, session):
             with remotezip.RemoteZip(url, session=session) as zip_file:
                 filenames = zip_file.namelist()
                 for filename in filenames:
-                    if (filename.endswith('.xml') and '/calibration/' not in filename) or filename.endswith('.safe'):
+                    if (filename.endswith('.xml') and '/calibration/' not in filename and '/rfi/' not in filename) or filename.endswith('.safe'):
                         with zip_file.open(filename) as file_handle:
                             s3.upload_fileobj(file_handle, os.environ['BUCKET'], filename)
             return

@@ -1,5 +1,11 @@
 # slc-xmls
 
+1. Set up conda environment
+   ```
+   conda env create -f environment.yml
+   conda activate slc-xmls
+   ```
+
 1. Deploy the cloudformation template
    ```
    python -m pip install -r requirements.txt -t src/` # (using pip 3.9)
@@ -9,7 +15,6 @@
 
 1. Generate a `slcs.txt` file with a list of all SLCs
    ```
-   python -m pip install -r requirements.txt
    python inventory_slcs.py
    ```
 

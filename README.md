@@ -9,7 +9,7 @@
 1. Deploy the cloudformation template
    ```
    python -m pip install -r requirements.txt -t src/
-   aws cloudformation package --template-file cloudformation.yml --s3-bucket <bucket> --s3-prefix cloudformation --output-file packaged.yml
+   aws cloudformation package --template-file cloudformation.yml --s3-bucket <bucket> --s3-prefix cloudformation --output-template packaged.yml
    aws cloudformation deploy --stack-name <stack name> --capabilities CAPABILITY_IAM --parameter-overrides Username=<edl username> Password=<edl password> BucketName=<bucket name>
    ```
 

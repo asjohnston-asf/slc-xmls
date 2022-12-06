@@ -10,7 +10,7 @@
    ```
    python -m pip install -r requirements.txt -t src/
    aws cloudformation package --template-file cloudformation.yml --s3-bucket <bucket> --s3-prefix cloudformation --output-template packaged.yml
-   aws cloudformation deploy --stack-name <stack name> --capabilities CAPABILITY_IAM --parameter-overrides Username=<edl username> Password=<edl password> BucketName=<bucket name>
+   aws cloudformation deploy --stack-name <stack name> --template-file packaged.yml --capabilities CAPABILITY_IAM --parameter-overrides Username=<edl username> Password=<edl password> BucketName=<bucket name>
    ```
 
 1. Generate a `slcs.txt` file with a list of all SLCs
